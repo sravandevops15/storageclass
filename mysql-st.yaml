@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: mysql
+spec:
+ selector:
+   matchLabels:
+     app: gp3-mysql
+ serviceName: todo-mysql
+ replicas: 1
+ template:
+   metadata:
+     labels:
+       app: gp3-mysql
+   spec:
+     terminationGracePeriodSeconds: 10
+     containers:
+     - name: gp3-mysql
+       image: mysql:8
+       ports:
+       - containerPort: 3306
+         name: mysql
+       volumeMounts:
+       - mountPath: /var/lib/mysql
+         name: gp3-volume
+     volumes:
+     - name: gp3-volume
+       persistentVolumeClaim:
+         claimName: gp3-claim
+
+
